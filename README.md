@@ -22,6 +22,6 @@ dataset and show an improvement of 3.26% over the existing methods.</p>
 Part of the code or models are from 
 [DMS](https://github.com/BCV-Uniandes/DMS),
 [MAttNet](https://github.com/lichengunc/MAttNet),
-[Yolov3](https://pjreddie.com/darknet/yolo/) and
-[Pytorch-yolov3](https://github.com/eriklindernoren/PyTorch-YOLOv3).
-[One Stage Grounding](https://github.com/zyang-ur/onestage_grounding)
+[Yolov3](https://pjreddie.com/darknet/yolo/), 
+[Pytorch-yolov3](https://github.com/eriklindernoren/PyTorch-YOLOv3) and
+[One Stage Grounding](https://github.com/zyang-ur/onestage_grounding).
