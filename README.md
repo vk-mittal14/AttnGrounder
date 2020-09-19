@@ -1,5 +1,7 @@
 # AttnGrounder: Talking to Cars with Attention
-Code for the [paper](https://arxiv.org/pdf/2009.05684.pdf) AttnGrounder: Talking to Cars with Attention by Vivek Mittal.
+[AttnGrounder: Talking to Cars with Attention ](https://arxiv.org/pdf/2009.05684.pdf) by Vivek Mittal. 
+
+Accepted at [ECCV'20 C4AV Workshop](https://c4av-2020.github.io/). Talk2Car dataset used for this paper is available at https://talk2car.github.io/.
 
 ## Model Overview
 ![complete_model](complete_model.png "AttnGrounder Complete Model")
