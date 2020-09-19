@@ -20,6 +20,12 @@ dataset and show an improvement of 3.26% over the existing methods.</p>
 ## Attention Map in Action
 ![attention_map](examples_img_final.png "Attention Map")
 
+## Usage
+Preprocessed Talk2Car data is available at this [link](https://drive.google.com/drive/folders/11R3VTHKErToa78qZ51vbIoGCHKsrfJLe?usp=sharing) extract it under `ln_data` folder. Download the images following instruction given at this [link](https://talk2car.github.io/). Extract all the images in `ln_data\images` folder. All the hyperparameters are set, just run the following command in working directory. If you face any problem raise an issue. 
+```
+python train_yolo.py
+```
+
 ### Credits
 Part of the code or models are from 
 [DMS](https://github.com/BCV-Uniandes/DMS),
