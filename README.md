@@ -25,7 +25,7 @@ Preprocessed Talk2Car data is available at this [link](https://drive.google.com/
 ```
 python train_yolo.py
 ```
-
+[https://drive.google.com/file/d/1BP8TD5OjUKLLYKUKvxYp_zYal9eLHXoH/view?usp=sharing](Pretrained model) is also available put this pretrained model file in `saved_models`  directory.
 ### Credits
 Part of the code or models are from 
 [DMS](https://github.com/BCV-Uniandes/DMS),
