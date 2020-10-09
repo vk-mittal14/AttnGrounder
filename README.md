@@ -4,7 +4,7 @@
 Accepted at [ECCV'20 C4AV Workshop](https://c4av-2020.github.io/). Talk2Car dataset used for this paper is available at https://talk2car.github.io/.
 
 ## Model Overview
-![complete_model](complete_model.png "AttnGrounder Complete Model")
+![complete_model](static/complete_model.png "AttnGrounder Complete Model")
 
 **Abstract:** <p>We propose Attention Grounder (AttnGrounder), a singlestage end-to-end trainable model for the task of visual grounding. Visual
 grounding aims to localize a specific object in an image based on a given
@@ -18,7 +18,7 @@ ground-truth coordinates. We evaluate AttnGrounder on the Talk2Car
 dataset and show an improvement of 3.26% over the existing methods.</p>
 
 ## Attention Map in Action
-![attention_map](examples_img_final.png "Attention Map")
+![attention_map](static/examples_img_final.png "Attention Map")
 
 ## Usage
 Preprocessed Talk2Car data is available at this [link](https://drive.google.com/drive/folders/11R3VTHKErToa78qZ51vbIoGCHKsrfJLe?usp=sharing) extract it under `ln_data` folder. Download the images following instruction given at this [link](https://talk2car.github.io/). Extract all the images in `ln_data\images` folder. All the hyperparameters are set, just run the following command in working directory. If you face any problem raise an issue. 

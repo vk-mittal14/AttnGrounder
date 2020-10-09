@@ -35,7 +35,7 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, ToTensor, Normalize
 from utils.transforms import ResizeImage, ResizeAnnotation
 
-from dataset.referit_loader import *
+from dataset.talk2car_loader import *
 from model.grounding_model import *
 from utils.parsing_metrics import *
 from utils.utils import *
@@ -65,23 +65,6 @@ def yolo_loss(input, target, gi, gj, best_n_list, w_coord=5., w_neg=1./5, size_a
     loss_conf = celoss(pred_conf, gt_conf.max(1)[1])
     return (loss_x+loss_y+loss_w+loss_h)*w_coord + loss_conf
 
-def save_segmentation_map(bbox, target_bbox, input, mode, batch_start_index, \
-    merge_pred=None, pred_conf_visu=None, save_path='./visulizations/'):
-    n = input.shape[0]
-    save_path=save_path+mode
-
-    input=input.data.cpu().numpy()
-    input=input.transpose(0,2,3,1)
-    for ii in range(n):
-        os.system('mkdir -p %s/sample_%d'%(save_path,batch_start_index+ii))
-        imgs = input[ii,:,:,:].copy()
-        imgs = (imgs*np.array([0.299, 0.224, 0.225])+np.array([0.485, 0.456, 0.406]))*255.
-        # imgs = imgs.transpose(2,0,1)
-        imgs = np.array(imgs, dtype=np.float32)
-        imgs = cv2.cvtColor(imgs, cv2.COLOR_RGB2BGR)
-        cv2.rectangle(imgs, (bbox[ii,0], bbox[ii,1]), (bbox[ii,2], bbox[ii,3]), (255,0,0), 2)
-        cv2.rectangle(imgs, (target_bbox[ii,0], target_bbox[ii,1]), (target_bbox[ii,2], target_bbox[ii,3]), (0,255,0), 2)
-        cv2.imwrite('%s/sample_%d/pred_yolo.png'%(save_path,batch_start_index+ii),imgs)
 
 def lr_poly(base_lr, iter, max_iter, power):
     return base_lr * ((1 - float(iter) / max_iter) ** (power))
@@ -197,7 +180,6 @@ def main():
     parser.add_argument('--savename', default='one_stage_lstm', type=str, help='Name head for saved model')
     parser.add_argument('--save_plot', dest='save_plot', default=False, action='store_true', help='save visulization plots')
     parser.add_argument('--seed', default=42, type=int, help='random seed')
-    parser.add_argument('--test', dest='test', default=False, action='store_true', help='test')
 
     global args, anchors_full
     args = parser.parse_args()
@@ -253,17 +235,7 @@ def main():
                               pin_memory=True, drop_last=True, num_workers=args.workers)
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False,
                               pin_memory=True, drop_last=True, num_workers=args.workers)
-    if args.test == True:
-
-        test_dataset = Talk2CarDataset(data_root=args.data_root,
-                            testmode=True,
-                            split='test',
-                            imsize = args.size,
-                            transform=input_transform,
-                            max_query_len=args.time,
-                            )
-        test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False,
-                                pin_memory=True, drop_last=True, num_workers=0)
+    
 
     ## Model
     model = grounding_model(corpus=train_dataset.corpus, emb_size=args.emb_size)
@@ -315,9 +287,6 @@ def main():
 
     ## training and testing
     best_accu = -float('Inf')
-    if args.test:
-        _ = test_epoch(test_loader, model, args.size_average)
-        exit(0)
     for epoch in range(args.start_epoch, args.nb_epoch):
         adjust_learning_rate(optimizer, epoch)
         train_epoch(train_loader, model, optimizer, epoch, args.size_average, 0.1)
@@ -422,11 +391,6 @@ def train_epoch(train_loader, model, optimizer, epoch, size_average, lambda_map_
         batch_time.update(time.time() - end)
         end = time.time()
 
-        if args.save_plot:
-            # if batch_idx%100==0 and epoch==args.nb_epoch-1:
-            if True:
-                save_segmentation_map(pred_coord,target_bbox,imgs,'train',batch_idx*imgs.size(0),\
-                    save_path='./visulizations/%s/'%args.dataset)
 
         if batch_idx % args.print_freq == 0:
             print_str = 'Epoch: [{0}][{1}/{2}]\t' \
@@ -530,11 +494,7 @@ def validate_epoch(val_loader, model, size_average, mode='val'):
         batch_time.update(time.time() - end)
         end = time.time()
 
-        if args.save_plot:
-            if batch_idx%1==0:
-                save_segmentation_map(pred_bbox,target_bbox,imgs,'val',batch_idx*imgs.size(0),\
-                    save_path='./visulizations/%s/'%args.dataset)
-        
+  
         if batch_idx % args.print_freq == 0:
             print_str = '[{0}/{1}]\t' \
                 'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t' \
