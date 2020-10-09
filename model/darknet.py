@@ -1,3 +1,8 @@
+
+"""
+based on : https://github.com/zyang-ur/onestage_grounding/blob/master/model/darknet.py
+"""
+
 from __future__ import division
 
 import math
@@ -7,13 +12,9 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 import numpy as np
 from collections import defaultdict, OrderedDict
-
 from PIL import Image
-
-# from utils.parse_config import *
 from utils.utils import *
-# import matplotlib.pyplot as plt
-# import matplotlib.patches as patches
+
 
 exist_id = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, \
     11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, \

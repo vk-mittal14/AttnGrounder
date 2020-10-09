@@ -1,3 +1,8 @@
+"""
+Based on: 
+https://github.com/zyang-ur/onestage_grounding/blob/master/model/grounding_model.py"""
+
+
 from collections import OrderedDict
 
 import torch
@@ -6,7 +11,6 @@ import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
 from torch.utils.data import TensorDataset, DataLoader, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
-
 from .darknet import *
 
 import argparse
@@ -40,15 +44,13 @@ class RNNEncoder(nn.Module):
                input_dropout_p=0, dropout_p=0, n_layers=1, rnn_type='lstm', variable_lengths=True):
         super(RNNEncoder, self).__init__()
         self.variable_lengths = variable_lengths
-        if use_glove == True:
+        if use_glove:
             word_embedding_size ==  300
         self.embedding = nn.Embedding(vocab_size, word_embedding_size)
         if use_glove:
             self.embedding.load_state_dict({'weight': torch.tensor(glove_wts)})
 
         self.input_dropout = nn.Dropout(input_dropout_p)
-        # self.mlp = nn.Sequential(nn.Linear(word_embedding_size, word_vec_size), 
-        #                          nn.ReLU())
         self.rnn_type = rnn_type
         self.rnn = getattr(nn, rnn_type.upper())(word_embedding_size, hidden_size, n_layers,
                                                  batch_first=True,
